@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>document.documentElement.className+=" js";</script>
+<title>Start Your Own Online Academy — branded coaching app in 24 hours</title>
+<meta name="description" content="Give your coaching institute its own branded learning app — courses, tests and fees under your name, straight to your bank, with zero revenue cut. Watch the 2-minute demo." />
+
+<!-- =====================================================================
+     GOOGLE ADS / ANALYTICS  —  paste your gtag here (goes on every page).
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config','G-XXXXXXX');   // GA4
+  gtag('config','AW-XXXXXXX');  // Google Ads
+</script>
+====================================================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  /* ============================ DESIGN TOKENS ============================
+     Direction: "Night ledger" — a deep ink-navy canvas (the premium,
+     expensive feel), warm marigold/amber as the single action colour
+     (aspiration, the Indian institute), mint-teal reserved strictly for
+     "money in / growth". Not the cream-serif-terracotta default; not the
+     black + single-acid default. */
+  :root{
+    --ink:#0B1120;            /* deepest canvas */
+    --ink-2:#111a2e;          /* raised dark surface */
+    --ink-3:#17223a;          /* card on dark */
+    --line-dk:#22304d;        /* hairline on dark */
+
+    --paper:#ffffff;          /* light section base */
+    --paper-2:#f5f7fb;        /* light raised */
+    --paper-3:#eef2f9;        /* light sunken */
+    --line:#e4e9f2;           /* hairline on light */
+
+    --text:#0d1526;           /* ink text on light */
+    --muted-l:#5d6576;        /* muted on light */
+    --muted-d:#93a0bb;        /* muted on dark */
+
+    --amber:#F5A623;          /* action / marigold */
+    --amber-2:#ffbe4d;
+    --amber-ink:#3a2708;      /* text on amber */
+    --mint:#25C89A;           /* money / growth only */
+    --mint-soft:#0f3d31;
+
+    --wa:#25D366;
+
+    --r:16px; --r-lg:22px; --r-xl:30px;
+    --shadow-lg:0 30px 70px -35px rgba(4,8,20,.55);
+    --shadow-card:0 18px 40px -28px rgba(13,20,40,.30);
+    --maxw:1140px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--text);background:var(--paper);line-height:1.6;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    font-feature-settings:"cv05","ss01";
+  }
+  h1,h2,h3,.display{font-family:"Bricolage Grotesque","Inter",sans-serif;line-height:1.05;letter-spacing:-.02em;font-weight:700;}
+  a{color:inherit;text-decoration:none;}
+  img,svg{display:block;}
+  .tnum{font-variant-numeric:tabular-nums;}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+
+  /* ---------- buttons ---------- */
+  .btn{display:inline-flex;align-items:center;gap:10px;border-radius:999px;font-weight:600;
+    font-size:15px;padding:13px 22px;cursor:pointer;border:1px solid transparent;
+    transition:transform .16s cubic-bezier(.16,1,.3,1),box-shadow .16s,background .16s,border-color .16s;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn:focus-visible{outline:3px solid var(--amber);outline-offset:2px;}
+  .btn svg{width:18px;height:18px;flex:0 0 auto;}
+  .btn-amber{background:var(--amber);color:var(--amber-ink);box-shadow:0 14px 30px -12px rgba(245,166,35,.6);font-weight:700;}
+  .btn-amber:hover{background:var(--amber-2);box-shadow:0 18px 36px -12px rgba(245,166,35,.75);}
+  .btn-ghost-d{background:rgba(255,255,255,.04);color:#fff;border-color:rgba(255,255,255,.18);}
+  .btn-ghost-d:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.32);}
+  .btn-ghost{background:#fff;color:var(--text);border-color:var(--line);}
+  .btn-ghost:hover{border-color:#c7d0e0;}
+  .btn-wa{background:var(--wa);color:#08351f;font-weight:700;}
+  .btn-lg{padding:16px 28px;font-size:16px;}
+
+  /* ---------- shared bits ---------- */
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:700;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--amber);}
+  .eyebrow.dark{color:#b06d00;}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px rgba(245,166,35,.18);}
+  .sec{padding:88px 0;}
+  .sec-head{max-width:640px;margin:0 auto 46px;text-align:center;}
+  .sec-head h2{font-size:clamp(28px,4.2vw,42px);margin-top:16px;}
+  .sec-head p{color:var(--muted-l);font-size:18px;margin-top:14px;}
+
+  /* ============================ NAV ============================ */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(11,17,32,.72);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-dk);}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:70px;}
+  .brand{display:flex;align-items:center;gap:11px;color:#fff;font-family:"Bricolage Grotesque";font-size:20px;font-weight:700;letter-spacing:-.01em;}
+  .brand .mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(140deg,var(--amber),#ff7d3c);
+    display:grid;place-items:center;box-shadow:0 8px 20px -8px rgba(245,166,35,.7);}
+  .brand .mark svg{width:19px;height:19px;color:#2a1c04;}
+  .nav-links{display:flex;gap:30px;font-size:14.5px;color:var(--muted-d);font-weight:500;}
+  .nav-links a{transition:color .15s;}
+  .nav-links a:hover{color:#fff;}
+  .nav .btn{padding:11px 20px;font-size:14.5px;}
+  @media(max-width:860px){.nav-links{display:none;}}
+
+  /* ============================ HERO ============================ */
+  .hero{position:relative;background:var(--ink);color:#fff;overflow:hidden;
+    padding:74px 0 96px;border-bottom:1px solid var(--line-dk);}
+  .hero::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(48rem 30rem at 8% -8%, rgba(245,166,35,.16), transparent 60%),
+      radial-gradient(42rem 30rem at 108% 6%, rgba(37,200,154,.12), transparent 58%);}
+  .hero::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+    background-size:44px 44px;mask-image:radial-gradient(60rem 40rem at 30% 0%,#000,transparent 75%);}
+  .hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.08fr .92fr;gap:56px;align-items:center;}
+  .hero h1{font-size:clamp(36px,5.4vw,60px);font-weight:800;letter-spacing:-.03em;}
+  .hero h1 .u{color:var(--amber);}
+  .hero .sub{font-size:19px;color:#c7d0e2;margin-top:22px;max-width:540px;}
+  .hero .sub b{color:#fff;font-weight:600;}
+  .hero .cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px;}
+  .hero .trust{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 20px;}
+  .hero .trust span{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:#aeb9cf;}
+  .hero .trust svg{width:17px;height:17px;color:var(--mint);flex:0 0 auto;}
+  @media(max-width:940px){
+    .hero .wrap{grid-template-columns:1fr;gap:44px;text-align:center;}
+    .hero .sub{margin-left:auto;margin-right:auto;}
+    .hero .cta,.hero .trust{justify-content:center;}
+  }
+
+  /* signature: the owner's own branded academy, as a device mock */
+  .mock{position:relative;}
+  .mock .device{background:var(--ink-2);border:1px solid var(--line-dk);border-radius:24px;
+    box-shadow:var(--shadow-lg);padding:16px;position:relative;}
+  .mock .bar{display:flex;align-items:center;gap:7px;padding:2px 4px 12px;}
+  .mock .bar i{width:11px;height:11px;border-radius:50%;background:#2c3a58;display:block;}
+  .mock .bar .addr{margin-left:10px;font-size:11.5px;color:var(--muted-d);background:#0c1424;
+    border:1px solid var(--line-dk);border-radius:7px;padding:4px 10px;flex:1;font-family:"Inter";}
+  .mock .screen{background:linear-gradient(180deg,#0c1526,#0a1120);border:1px solid var(--line-dk);
+    border-radius:14px;overflow:hidden;}
+  .mock .top{display:flex;align-items:center;justify-content:space-between;padding:14px 15px;border-bottom:1px solid var(--line-dk);}
+  .mock .acad{display:flex;align-items:center;gap:9px;}
+  .mock .acad .logo{width:26px;height:26px;border-radius:7px;background:linear-gradient(140deg,#6f8bff,#3a56c8);display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px;font-family:"Bricolage Grotesque";}
+  .mock .acad b{font-size:13.5px;color:#eef2fb;font-family:"Bricolage Grotesque";}
+  .mock .acad span{display:block;font-size:10px;color:var(--muted-d);font-weight:500;}
+  .mock .pill{font-size:10.5px;color:var(--mint);border:1px solid rgba(37,200,154,.35);background:rgba(37,200,154,.08);border-radius:999px;padding:3px 9px;font-weight:600;}
+  .mock .body{padding:14px 15px 16px;}
+  .mock .kpi{display:flex;gap:9px;margin-bottom:13px;}
+  .mock .kpi .box{flex:1;background:var(--ink-3);border:1px solid var(--line-dk);border-radius:11px;padding:10px 11px;}
+  .mock .kpi .k{font-size:10px;color:var(--muted-d);font-weight:500;letter-spacing:.02em;}
+  .mock .kpi .v{font-size:18px;font-weight:700;font-family:"Bricolage Grotesque";margin-top:3px;letter-spacing:-.01em;}
+  .mock .kpi .v.money{color:var(--mint);}
+  .mock .course{display:flex;align-items:center;gap:11px;background:var(--ink-3);border:1px solid var(--line-dk);border-radius:11px;padding:10px 11px;margin-top:9px;}
+  .mock .course .th{width:44px;height:34px;border-radius:7px;flex:0 0 auto;background:linear-gradient(135deg,#233457,#182741);display:grid;place-items:center;}
+  .mock .course .th svg{width:16px;height:16px;color:#8fa2c9;}
+  .mock .course .m b{font-size:12px;color:#e8edf7;display:block;font-weight:600;}
+  .mock .course .m span{font-size:10.5px;color:var(--muted-d);}
+  .mock .course .pr{margin-left:auto;font-size:12px;font-weight:700;color:#fff;font-family:"Bricolage Grotesque";}
+  /* floating settlement card */
+  .mock .float{position:absolute;right:-14px;bottom:26px;background:#fff;color:var(--text);
+    border-radius:14px;padding:12px 14px;box-shadow:0 24px 50px -20px rgba(0,0,0,.55);
+    display:flex;align-items:center;gap:11px;max-width:230px;}
+  .mock .float .ic{width:34px;height:34px;border-radius:9px;background:rgba(37,200,154,.14);display:grid;place-items:center;flex:0 0 auto;}
+  .mock .float .ic svg{width:18px;height:18px;color:#0f9d76;}
+  .mock .float b{font-size:13px;display:block;}
+  .mock .float span{font-size:11px;color:var(--muted-l);}
+  @media(max-width:940px){.mock{max-width:440px;margin:0 auto;}.mock .float{right:0;}}
+  @media(max-width:420px){.mock .float{display:none;}}
+
+  /* ============================ MARQUEE / CONTEXT ============================ */
+  .ticker{background:var(--ink-2);color:#fff;border-bottom:1px solid var(--line-dk);padding:16px 0;}
+  .ticker .wrap{display:flex;flex-wrap:wrap;gap:12px 26px;justify-content:center;align-items:center;font-size:13.5px;color:var(--muted-d);}
+  .ticker b{color:#fff;font-weight:600;}
+  .ticker .sep{width:5px;height:5px;border-radius:50%;background:#2c3a58;}
+  @media(max-width:700px){.ticker .sep{display:none;}}
+
+  /* ============================ VIDEO ============================ */
+  .video-sec{background:var(--ink);color:#fff;padding:84px 0;}
+  .video-sec .sec-head p{color:#b7c2d8;}
+  .video-wrap{max-width:900px;margin:0 auto;}
+  .video-frame{position:relative;padding-top:56.25%;border-radius:var(--r-xl);overflow:hidden;
+    background:#060a14;border:1px solid var(--line-dk);box-shadow:var(--shadow-lg);}
+  .video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .video-ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#cdd6e8;
+    background:radial-gradient(34rem 20rem at 50% 10%, rgba(245,166,35,.22), transparent 62%);}
+  .video-ph .play{width:82px;height:82px;border-radius:50%;background:var(--amber);display:grid;place-items:center;
+    margin:0 auto 16px;box-shadow:0 18px 40px -12px rgba(245,166,35,.7);cursor:pointer;transition:transform .16s;}
+  .video-ph .play:hover{transform:scale(1.06);}
+  .video-ph .play svg{width:30px;height:30px;color:var(--amber-ink);margin-left:3px;}
+  .video-ph .t{font-size:15px;font-weight:600;color:#fff;}
+  .video-ph .s{font-size:12.5px;color:#93a0bb;margin-top:6px;}
+  .video-cap{text-align:center;color:#93a0bb;font-size:13.5px;margin-top:16px;}
+
+  /* ============================ BENTO FEATURES ============================ */
+  .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;
+    transition:transform .18s cubic-bezier(.16,1,.3,1),box-shadow .18s,border-color .18s;position:relative;overflow:hidden;}
+  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-card);border-color:#d2dcec;}
+  .card .ic{width:46px;height:46px;border-radius:12px;background:var(--paper-3);display:grid;place-items:center;margin-bottom:16px;}
+  .card .ic svg{width:23px;height:23px;color:#2b3a5c;}
+  .card h3{font-size:19px;margin-bottom:8px;}
+  .card p{color:var(--muted-l);font-size:14.5px;}
+  .card.span3{grid-column:span 3;}
+  .card.span2{grid-column:span 2;}
+  .card.span6{grid-column:span 6;}
+  /* the two hero-cards get colour */
+  .card.feature-brand{grid-column:span 3;background:linear-gradient(160deg,#101a30,#0c1424);color:#fff;border-color:var(--line-dk);}
+  .card.feature-brand .ic{background:rgba(245,166,35,.14);}
+  .card.feature-brand .ic svg{color:var(--amber);}
+  .card.feature-brand p{color:#aeb9cf;}
+  .card.feature-money{grid-column:span 3;background:linear-gradient(160deg,#0d3d31,#0a2c25);color:#fff;border-color:#155041;}
+  .card.feature-money .ic{background:rgba(37,200,154,.16);}
+  .card.feature-money .ic svg{color:var(--mint);}
+  .card.feature-money p{color:#a9d8c9;}
+  .card.feature-money .tag{display:inline-block;margin-top:14px;font-size:12px;font-weight:700;color:#0a2c25;background:var(--mint);border-radius:999px;padding:4px 11px;}
+  @media(max-width:900px){.bento{grid-template-columns:1fr 1fr;}
+    .card.span3,.card.span2,.card.span6,.card.feature-brand,.card.feature-money{grid-column:span 1;}}
+  @media(max-width:560px){.bento{grid-template-columns:1fr;}
+    .card.span3,.card.span2,.card.span6,.card.feature-brand,.card.feature-money{grid-column:span 1;}}
+
+  /* ============================ STEPS ============================ */
+  .steps-sec{background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:s;}
+  .step{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;position:relative;}
+  .step .n{font-family:"Bricolage Grotesque";font-size:14px;font-weight:700;color:var(--amber-ink);
+    background:var(--amber);width:32px;height:32px;border-radius:9px;display:grid;place-items:center;margin-bottom:16px;}
+  .step h3{font-size:18px;margin-bottom:7px;}
+  .step p{color:var(--muted-l);font-size:14.5px;}
+  .step .rule{position:absolute;top:41px;right:-9px;width:18px;height:2px;background:var(--line);z-index:2;}
+  @media(max-width:820px){.steps{grid-template-columns:1fr;}.step .rule{display:none;}}
+
+  /* ============================ COMPARE ============================ */
+  .cmp{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-card);}
+  .cmp table{width:100%;border-collapse:collapse;}
+  .cmp th,.cmp td{padding:16px 18px;text-align:left;font-size:14.5px;border-bottom:1px solid var(--line);vertical-align:middle;}
+  .cmp thead th{background:var(--paper-2);font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted-l);font-weight:700;}
+  .cmp thead th.mine{color:#0d1526;background:#fff8ec;border-bottom:2px solid var(--amber);}
+  .cmp tbody tr:last-child td{border-bottom:none;}
+  .cmp td:first-child{color:var(--muted-l);font-weight:500;}
+  .cmp td.mine{font-weight:600;background:#fffdf8;}
+  .cmp .yes,.cmp .no{display:inline-flex;align-items:center;gap:8px;}
+  .cmp .yes{color:#0f9d76;font-weight:700;}
+  .cmp .yes svg{width:17px;height:17px;}
+  .cmp .no{color:#b0546a;}
+  .cmp .no svg{width:16px;height:16px;color:#c98a99;}
+  @media(max-width:640px){.cmp th,.cmp td{padding:12px 12px;font-size:13px;}}
+
+  /* ============================ PRICING TEASER ============================ */
+  .price-sec{background:var(--ink);color:#fff;}
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:840px;margin:0 auto;}
+  @media(max-width:720px){.price-grid{grid-template-columns:1fr;}}
+  .plan{position:relative;background:linear-gradient(160deg,#111c33,#0b1424);border:1px solid var(--line-dk);
+    border-radius:var(--r-xl);padding:32px 28px;display:flex;flex-direction:column;text-align:left;}
+  .plan.best{border-color:var(--amber);box-shadow:0 0 0 3px rgba(245,166,35,.16),var(--shadow-lg);}
+  .plan .tag{position:absolute;top:-13px;left:28px;background:var(--amber);color:var(--amber-ink);
+    font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:4px 12px;border-radius:999px;}
+  .plan h3{font-size:20px;color:#fff;}
+  .plan .price{font-family:"Bricolage Grotesque";font-size:40px;font-weight:800;color:#fff;margin-top:10px;letter-spacing:-.02em;}
+  .plan .price span{display:block;font-size:13px;font-weight:600;color:#93a0bb;letter-spacing:0;margin-top:3px;}
+  .plan .plan-sub{color:#b7c2d8;font-size:14px;margin-top:12px;}
+  .plan ul{list-style:none;margin:18px 0 26px;}
+  .plan li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;color:#dbe2ef;font-size:14px;}
+  .plan li svg{width:18px;height:18px;color:var(--mint);flex:0 0 auto;margin-top:1px;}
+  .plan .btn{width:100%;justify-content:center;margin-top:auto;}
+  .price-card{max-width:720px;margin:0 auto;text-align:center;background:linear-gradient(160deg,#111c33,#0b1424);
+    border:1px solid var(--line-dk);border-radius:var(--r-xl);padding:48px 40px;box-shadow:var(--shadow-lg);position:relative;overflow:hidden;}
+  .price-card::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(30rem 16rem at 50% -10%,rgba(245,166,35,.16),transparent 60%);}
+  .price-card h2{font-size:clamp(26px,4vw,38px);position:relative;}
+  .price-card p{color:#b7c2d8;font-size:17px;margin-top:14px;position:relative;}
+  .price-card .row{display:flex;flex-wrap:wrap;gap:12px 30px;justify-content:center;margin:26px 0 28px;position:relative;}
+  .price-card .row span{display:inline-flex;align-items:center;gap:9px;font-size:14px;color:#cdd6e8;}
+  .price-card .row svg{width:18px;height:18px;color:var(--mint);}
+
+  /* ============================ LEAD FORM ============================ */
+  .lead{background:var(--paper-2);}
+  .lead-card{background:#fff;border:1px solid var(--line);border-radius:var(--r-xl);box-shadow:var(--shadow-lg);
+    display:grid;grid-template-columns:1fr 1.05fr;overflow:hidden;}
+  .lead-left{padding:44px 40px;background:linear-gradient(165deg,#0d1830,#0a1120);color:#fff;position:relative;overflow:hidden;}
+  .lead-left::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(26rem 18rem at 0% 0%,rgba(245,166,35,.15),transparent 60%);}
+  .lead-left h2{font-size:30px;position:relative;}
+  .lead-left p{color:#b7c2d8;font-size:15px;margin-top:14px;position:relative;}
+  .lead-left ul{list-style:none;margin-top:22px;position:relative;}
+  .lead-left li{display:flex;gap:11px;align-items:flex-start;padding:8px 0;color:#dbe2ef;font-size:14.5px;}
+  .lead-left li svg{width:20px;height:20px;color:var(--mint);flex:0 0 auto;margin-top:1px;}
+  .lead-left .wa{position:relative;margin-top:26px;display:inline-flex;}
+  .lead-right{padding:40px;}
+  form label{display:block;font-size:12.5px;font-weight:700;color:var(--text);margin:0 0 7px;}
+  form label .req{color:var(--amber);}
+  .field{margin-bottom:16px;}
+  form input,form select{width:100%;height:48px;border:1px solid var(--line);border-radius:12px;
+    padding:0 14px;font-size:15px;background:#fff;color:var(--text);font-family:inherit;transition:border-color .15s,box-shadow .15s;}
+  form select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235b6576' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat:no-repeat;background-position:right 14px center;padding-right:40px;cursor:pointer;}
+  form input::placeholder{color:#9aa4b6;}
+  form input:focus,form select:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 4px rgba(245,166,35,.16);}
+  form .btn{width:100%;justify-content:center;margin-top:8px;height:54px;font-size:16px;}
+  .form-note{font-size:12px;color:var(--muted-l);margin-top:12px;text-align:center;}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+  @media(max-width:820px){.lead-card{grid-template-columns:1fr;}.lead-left{padding:36px 30px;}.lead-right{padding:32px 26px;}}
+
+  /* ============================ FAQ ============================ */
+  details{border:1px solid var(--line);border-radius:14px;padding:2px 20px;margin-bottom:12px;background:#fff;transition:border-color .15s;}
+  details[open]{border-color:#d2dcec;}
+  details summary{cursor:pointer;font-weight:600;font-size:15.5px;padding:16px 0;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;}
+  details summary::-webkit-details-marker{display:none;}
+  details summary .plus{width:22px;height:22px;flex:0 0 auto;position:relative;}
+  details summary .plus::before,details summary .plus::after{content:"";position:absolute;background:var(--amber);border-radius:2px;transition:transform .2s;}
+  details summary .plus::before{top:10px;left:3px;width:16px;height:2.4px;}
+  details summary .plus::after{top:3px;left:10px;width:2.4px;height:16px;}
+  details[open] summary .plus::after{transform:rotate(90deg);opacity:0;}
+  details p{color:var(--muted-l);font-size:14.5px;padding:0 0 18px;}
+
+  /* ============================ FINAL CTA ============================ */
+  .final{background:var(--ink);color:#fff;text-align:center;}
+  .final h2{font-size:clamp(28px,4.4vw,44px);}
+  .final p{color:#b7c2d8;font-size:18px;margin:14px auto 30px;max-width:560px;}
+
+  /* ============================ FOOTER ============================ */
+  footer{background:var(--ink-2);color:var(--muted-d);padding:34px 0;border-top:1px solid var(--line-dk);}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;align-items:center;font-size:13px;}
+  footer .brand{font-size:16px;}
+  footer a{color:var(--muted-d);text-decoration:none;}
+  footer a:hover{color:#fff;}
+  footer .fl{display:flex;gap:20px;}
+
+  /* ---------- motion ---------- */
+  .js .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s cubic-bezier(.16,1,.3,1);}
+  .js .reveal.in{opacity:1;transform:none;}
+  @media(prefers-reduced-motion:reduce){
+    *{scroll-behavior:auto!important;}
+    .reveal{opacity:1;transform:none;transition:none;}
+    .btn:hover,.card:hover{transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= EDIT THESE ================= -->
+<script>
+  const WHATSAPP_NUMBER = "919XXXXXXXXX";              // your WhatsApp number, country code, no + / spaces
+  const BRAND           = "Online Academy";            // shown as your wordmark — set your real business name
+  const DEMO_URL        = "https://lms-prd.vercel.app"; // your live product demo
+  const DEMO_VIDEO_ID   = "";                          // your 2-min demo YouTube video ID (e.g. "dQw4w9WgXcQ")
+  const WEB3FORMS_KEY   = "";                          // optional: free key from web3forms.com to email you every lead
+</script>
+<!-- ============================================== -->
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1 2.5 3 6 3s6-2 6-3v-5"/></svg></span>
+      <span id="brand-name">Online Academy</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#watch">Demo</a><a href="#features">Features</a><a href="#compare">Why us</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn btn-amber" href="#lead">Start My Academy</a>
+  </div>
+</header>
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow"><span class="dot"></span> For coaching institutes &amp; tuition centres</span>
+      <h1 style="margin-top:18px;">Start Your Own<br>Online <span class="u">Academy</span></h1>
+      <p class="sub">Give your coaching a learning app under <b>your own name and domain</b> — video lessons, tests with ranks, and fees that land <b>straight in your bank</b>. No revenue cut, no app store, live in 24 hours.</p>
+      <div class="cta">
+        <a class="btn btn-amber btn-lg" href="#lead">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5 3 21l4.5-1.5"/><path d="M15 6l3 3"/><path d="M13 3l8 8-9.5 9.5-5.5 1 1-5.5L13 3Z"/></svg>
+          Start My Academy
+        </a>
+        <a class="btn btn-ghost-d btn-lg" href="#watch">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4V8Z" fill="currentColor" stroke="none"/></svg>
+          Watch 2-min demo
+        </a>
+      </div>
+      <div class="trust">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> <b style="color:#fff">0%</b>&nbsp;commission on fees</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Your logo &amp; domain</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Setup in 24 hours</span>
+      </div>
+    </div>
+
+    <!-- SIGNATURE: the owner's own branded academy -->
+    <div class="mock reveal" aria-hidden="true">
+      <div class="device">
+        <div class="bar"><i></i><i></i><i></i><span class="addr">learn.yourinstitute.com</span></div>
+        <div class="screen">
+          <div class="top">
+            <div class="acad">
+              <span class="logo">S</span>
+              <span><b>Sharma Classes</b><span>Physics &amp; Maths · NEET / JEE</span></span>
+            </div>
+            <span class="pill">● Live</span>
+          </div>
+          <div class="body">
+            <div class="kpi">
+              <div class="box"><div class="k">Students</div><div class="v tnum">1,284</div></div>
+              <div class="box"><div class="k">This month</div><div class="v money tnum">₹4.6L</div></div>
+              <div class="box"><div class="k">Tests taken</div><div class="v tnum">9,120</div></div>
+            </div>
+            <div class="course">
+              <div class="th"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10 8 6 4-6 4V8Z" fill="currentColor" stroke="none"/><rect x="2" y="4" width="20" height="16" rx="3"/></svg></div>
+              <div class="m"><b>NEET Physics — Full Course</b><span>48 lessons · 1,020 enrolled</span></div>
+              <div class="pr">₹6,999</div>
+            </div>
+            <div class="course">
+              <div class="th"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg></div>
+              <div class="m"><b>JEE Mains — Weekly Test Series</b><span>Ranks · percentile · PYQs</span></div>
+              <div class="pr">₹2,499</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="float">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></div>
+        <div><b class="tnum">₹6,999 received</b><span>Settled to your bank · 0% cut</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTEXT TICKER -->
+<div class="ticker">
+  <div class="wrap">
+    <span>Built for <b>NEET / JEE</b>, boards &amp; spoken-English coaching</span>
+    <span class="sep"></span>
+    <span>Login with <b>phone + OTP</b> — no downloads</span>
+    <span class="sep"></span>
+    <span>Video · PDF/Word notes · <b>timed tests with ranks</b></span>
+    <span class="sep"></span>
+    <span>Payments via <b>your own Razorpay</b></span>
+  </div>
+</div>
+
+<!-- ============================ VIDEO ============================ -->
+<section class="video-sec" id="watch">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span> See it in action</span>
+      <h2 style="color:#fff">Your whole academy, in 2 minutes</h2>
+      <p>Watch a real branded institute — how owners add courses, run tests, and collect fees directly. Then launch yours.</p>
+    </div>
+    <div class="video-wrap reveal">
+      <div class="video-frame" id="video-frame">
+        <div class="video-ph" id="video-ph">
+          <div>
+            <div class="play" id="video-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+            <div class="t">Your 2-minute demo plays here</div>
+            <div class="s">Add your YouTube video ID in the settings block at the top of this file</div>
+          </div>
+        </div>
+      </div>
+      <div class="video-cap">A quick walkthrough of a live branded academy — courses, tests and payments.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FEATURES (BENTO) ============================ -->
+<section class="sec" id="features">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow dark"><span class="dot"></span> What you get</span>
+      <h2>Everything your institute needs — under your name</h2>
+      <p>One app for lessons, tests and fees. Your brand on the outside, your bank account on the inside.</p>
+    </div>
+    <div class="bento">
+      <div class="card feature-brand reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M2 5h14a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2H2Z"/><path d="M2 13h18a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2H2Z"/></svg></div>
+        <h3>100% your brand</h3>
+        <p>Your logo, your colours, your domain — learn.yourinstitute.com. Students never see anyone else's name. It looks and feels like you built it yourself.</p>
+      </div>
+      <div class="card feature-money reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/><path d="M6 15h5"/></svg></div>
+        <h3>Fees straight to your bank</h3>
+        <p>Connect your own Razorpay. Students pay you directly — we never touch your money and take no commission on a single rupee.</p>
+        <span class="tag">0% platform cut, always</span>
+      </div>
+
+      <div class="card span2 reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m10 9 5 3-5 3V9Z" fill="currentColor" stroke="none"/></svg></div>
+        <h3>Video, PDF &amp; notes</h3>
+        <p>Lessons from YouTube or Vimeo, plus PDF and Word notes. Students resume exactly where they left off.</p>
+      </div>
+      <div class="card span2 reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg></div>
+        <h3>Tests with real ranks</h3>
+        <p>Timed tests and PYQ banks. Auto-scoring with negative marking, rank &amp; percentile — just like the real exam.</p>
+      </div>
+      <div class="card span2 reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div>
+        <h3>Works on any phone</h3>
+        <p>Login is a phone number and an OTP — no passwords, no app store. Opens instantly in any browser.</p>
+      </div>
+
+      <div class="card span3 reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></div>
+        <h3>You're fully in control</h3>
+        <p>Every enrolment, payment and student in one dashboard. Run coupons, publish or unpublish courses in a click, and own all your data.</p>
+      </div>
+      <div class="card span3 reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3"/><path d="M12 18v3"/><path d="M3 12h3"/><path d="M18 12h3"/><circle cx="12" cy="12" r="4"/></svg></div>
+        <h3>We set it up for you</h3>
+        <p>Send your logo and colours; we brand and launch your app — usually within 24 hours. Adding your own courses takes only minutes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ STEPS ============================ -->
+<section class="sec steps-sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow dark"><span class="dot"></span> How it works</span>
+      <h2>Live in three simple steps</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="n">1</div><h3>We brand it for you</h3><p>Send your logo and colours. We set up your app on your own domain — usually within 24 hours.</p><span class="rule"></span></div>
+      <div class="step reveal"><div class="n">2</div><h3>Add your courses</h3><p>Upload videos, notes and tests in minutes. Set your prices and connect your payment account.</p><span class="rule"></span></div>
+      <div class="step reveal"><div class="n">3</div><h3>Share &amp; earn</h3><p>Send the link to students. They enrol, pay you directly, and start learning. You keep 100%.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ COMPARE ============================ -->
+<section class="sec" id="compare">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow dark"><span class="dot"></span> Why not a marketplace</span>
+      <h2>Your own app vs a shared platform</h2>
+      <p>On a marketplace you rent an audience. With your own app, you own it.</p>
+    </div>
+    <div class="cmp reveal">
+      <table>
+        <thead>
+          <tr><th>What matters</th><th>Marketplace / shared app</th><th class="mine">Your own branded app</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Whose brand students see</td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg> Theirs</span></td><td class="mine"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Yours</span></td></tr>
+          <tr><td>Cut of your course fees</td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg> Often 10–30%</span></td><td class="mine"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> 0%</span></td></tr>
+          <tr><td>Who owns the student data</td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg> The platform</span></td><td class="mine"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> You</span></td></tr>
+          <tr><td>Payments settle to</td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg> Their account first</span></td><td class="mine"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Your account, directly</span></td></tr>
+          <tr><td>Your own domain</td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg> No</span></td><td class="mine"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Yes</span></td></tr>
+          <tr><td>Cost model</td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg> % of everything you earn</span></td><td class="mine"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Flat licence — you keep the upside</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ LEAD FORM ============================ -->
+<section class="sec lead" id="lead">
+  <div class="wrap">
+    <div class="lead-card reveal">
+      <div class="lead-left">
+        <span class="eyebrow"><span class="dot"></span> Start my academy</span>
+        <h2 style="margin-top:12px;">Get your branded app — start now</h2>
+        <p>Tell us about your institute and we'll set up a live walkthrough and a custom quote. Takes 30 seconds.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> A live look at your own branded app</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> See how students enrol and pay you directly</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> A clear quote for your size — no obligation</li>
+        </ul>
+        <a class="btn btn-wa wa" id="inline-wa">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.6.2-.2.3-.7.9-.9 1-.2.2-.3.2-.6.1-1.6-.8-2.6-1.5-3.7-3.3-.3-.5.3-.5.8-1.5.1-.2 0-.3 0-.5-.1-.1-.6-1.5-.9-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.9.9-1.1 2-.7 3.2.5 1.5 1.5 2.9 2 3.4 1.9 2.4 4 3.2 5.6 3.6.9.2 1.6.2 2.2 0 .6-.1 1.7-.7 2-1.4.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3Z"/><path d="M20.5 3.5A10.5 10.5 0 0 0 3.8 17.2L3 21l3.9-.8A10.5 10.5 0 1 0 20.5 3.5Zm-8.5 17c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-2.6.5.5-2.5-.2-.3A8.5 8.5 0 1 1 12 20.5Z"/></svg>
+          Message us on WhatsApp
+        </a>
+      </div>
+      <div class="lead-right">
+        <form id="lead-form" autocomplete="on" novalidate>
+          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="field">
+            <label for="f-name">Name <span class="req">*</span></label>
+            <input id="f-name" name="name" required autocomplete="name" placeholder="Your full name" />
+          </div>
+          <div class="field">
+            <label for="f-wa">WhatsApp number <span class="req">*</span></label>
+            <input id="f-wa" name="whatsapp" required inputmode="tel" autocomplete="tel" placeholder="10-digit mobile number" />
+          </div>
+          <div class="field">
+            <label for="f-email">Email <span class="req">*</span></label>
+            <input id="f-email" name="email" type="email" required autocomplete="email" placeholder="you@institute.com" />
+          </div>
+          <div class="field">
+            <label for="f-biz">Business type <span class="req">*</span></label>
+            <select id="f-biz" name="business_type" required>
+              <option value="">Select…</option>
+              <option>Coaching institute</option>
+              <option>Tuition centre</option>
+              <option>Individual educator / tutor</option>
+              <option>School / college</option>
+              <option>EdTech / other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-stu">Number of students <span class="req">*</span></label>
+            <select id="f-stu" name="students" required>
+              <option value="">Select…</option>
+              <option>Under 100</option>
+              <option>100 – 500</option>
+              <option>500 – 2000</option>
+              <option>2000+</option>
+            </select>
+          </div>
+          <button class="btn btn-amber" type="submit" id="submit-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l8 8-9.5 9.5-5.5 1 1-5.5L13 3Z"/></svg>
+            Start My Academy
+          </button>
+          <p class="form-note">We'll reach out on WhatsApp &amp; email. No spam, ever.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FAQ ============================ -->
+<section class="sec" id="faq">
+  <div class="wrap" style="max-width:780px;">
+    <div class="sec-head reveal">
+      <span class="eyebrow dark"><span class="dot"></span> Questions</span>
+      <h2>Frequently asked</h2>
+    </div>
+    <div class="reveal">
+      <details><summary>How long does it take to launch? <span class="plus"></span></summary><p>Usually within 24 hours of receiving your logo and colours. Adding your own courses takes only minutes each.</p></details>
+      <details><summary>Do you take a cut of my fees? <span class="plus"></span></summary><p>No. You connect your own payment gateway and students pay you directly. We charge a flat licence — never a percentage of your income.</p></details>
+      <details><summary>Can students watch on their phones? <span class="plus"></span></summary><p>Yes — any mobile browser, no app-store download. Students log in with just a phone number and OTP.</p></details>
+      <details><summary>Can I upload PDFs and notes, not just video? <span class="plus"></span></summary><p>Absolutely — video lessons, PDF and Word notes, plus timed tests with ranks and percentiles.</p></details>
+      <details><summary>Is my data and my students' data private? <span class="plus"></span></summary><p>Yes. Each institute's data is fully isolated, and you own it. You can export your students and payments any time.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PRICING ============================ -->
+<section class="sec price-sec" id="pricing">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow"><span class="dot"></span> Simple pricing</span>
+      <h2 style="color:#fff">One-time setup. No commission, ever.</h2>
+      <p style="color:#b7c2d8">Pick what fits your institute. Students pay their fees straight to your bank — you keep 100%.</p>
+    </div>
+    <div class="price-grid reveal">
+      <div class="plan">
+        <h3>Web App</h3>
+        <div class="price">₹20,000<span>one-time setup</span></div>
+        <p class="plan-sub">Your own branded learning website.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Your logo, colours &amp; own domain</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Video, PDF &amp; notes, tests with ranks</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Fees to your bank — 0% commission</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Opens on any phone browser</li>
+        </ul>
+        <a class="btn btn-ghost-d" href="#lead">Start My Academy</a>
+      </div>
+      <div class="plan best">
+        <span class="tag">Most popular</span>
+        <h3>Web + Mobile App</h3>
+        <div class="price">₹40,000<span>one-time setup</span></div>
+        <p class="plan-sub">Everything in Web, plus an installable app.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Everything in the Web App</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Installable app on iPhone &amp; Android</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Home-screen icon with your logo</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Full-screen &amp; works offline</li>
+        </ul>
+        <a class="btn btn-amber" href="#lead">Start My Academy</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FINAL CTA ============================ -->
+<section class="sec final">
+  <div class="wrap reveal">
+    <h2>Stop renting someone else's platform</h2>
+    <p>Launch a learning app that carries your name, keeps every rupee, and is live this week.</p>
+    <a class="btn btn-amber btn-lg" href="#lead">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l8 8-9.5 9.5-5.5 1 1-5.5L13 3Z"/></svg>
+      Start My Academy
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand"><span class="mark" style="width:28px;height:28px;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1 2.5 3 6 3s6-2 6-3v-5"/></svg></span> <span id="brand-foot">Online Academy</span></div>
+    <div class="fl">
+      <a href="#watch">Demo</a>
+      <a href="#lead">Start My Academy</a>
+      <a href="privacy.html">Privacy</a>
+    </div>
+    <div>© <span id="year"></span> <span class="brand-foot2">Online Academy</span></div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  document.getElementById("brand-name").textContent = BRAND;
+  document.getElementById("brand-foot").textContent = BRAND;
+  document.querySelectorAll(".brand-foot2").forEach(function(el){el.textContent = BRAND;});
+  document.title = "Start Your Own Online Academy — " + BRAND;
+
+  // Embed the demo video if an ID is provided.
+  function embedVideo(){
+    if (!DEMO_VIDEO_ID) return;
+    document.getElementById("video-frame").innerHTML =
+      '<iframe src="https://www.youtube.com/embed/' + DEMO_VIDEO_ID + '?rel=0&modestbranding=1&autoplay=1" title="Product demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+  }
+  if (DEMO_VIDEO_ID) {
+    // show the poster; play button starts it (avoids autoplay-on-load)
+    var play = document.getElementById("video-play");
+    if (play) play.addEventListener("click", embedVideo);
+    var ph = document.getElementById("video-ph");
+    if (ph){ ph.querySelector(".s").textContent = "Click play to watch"; }
+  }
+
+  // WhatsApp click-to-chat.
+  function waLink(msg){ return "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg); }
+  document.getElementById("inline-wa").href =
+    waLink("Hi " + BRAND + ", I run a coaching institute and I'd like to launch my own branded app.");
+
+  // Lead form → optional email capture (Web3Forms) → thank-you page.
+  var form = document.getElementById("lead-form");
+  form.addEventListener("submit", async function(e){
+    e.preventDefault();
+    if (!form.checkValidity()){ form.reportValidity(); return; }
+    var btn = document.getElementById("submit-btn");
+    btn.disabled = true; btn.style.opacity = ".7"; btn.querySelector("svg").style.display="none";
+    btn.childNodes[btn.childNodes.length-1].textContent = " Please wait…";
+    var f = e.target;
+    var data = {
+      name: f.name.value, whatsapp: f.whatsapp.value, email: f.email.value,
+      business_type: f.business_type.value, students: f.students.value
+    };
+    try {
+      if (WEB3FORMS_KEY) {
+        await fetch("https://api.web3forms.com/submit", {
+          method:"POST", headers:{"Content-Type":"application/json","Accept":"application/json"},
+          body: JSON.stringify({ access_key: WEB3FORMS_KEY, subject: "New academy lead: " + data.name + " (" + data.business_type + ")", from_name: BRAND + " landing page", ...data })
+        });
+      }
+    } catch(_) {}
+    try { sessionStorage.setItem("lead", JSON.stringify(data)); } catch(_) {}
+    window.location.href = "thank-you.html";
+  });
+
+  // Scroll reveal.
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } });
+  }, {threshold:.12, rootMargin:"0px 0px -40px 0px"});
+  document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+</script>
+</body>
+</html>
