@@ -388,6 +388,7 @@
   const DEMO_URL        = "https://lms-prd.vercel.app"; // your live product demo
   const DEMO_VIDEO_ID   = "1M325UuECYc";               // your 2-min demo YouTube video ID
   const WEB3FORMS_KEY   = "dc754ebc-fbe6-4046-874c-282bf71c9e55";  // web3forms key — emails every lead to your inbox
+  const SHEETS_URL      = "https://script.google.com/macros/s/AKfycbznmgHAAQdgci0R9nRnDAQBoNqZTCOIwNnpXqLgUD8BxR3HVnGzsK0kh-AIku1knzhtQg/exec"; // copies every lead to your Google Sheet
 </script>
 <!-- ============================================== -->
 
@@ -776,12 +777,21 @@
       business_type: f.business_type.value, students: f.students.value
     };
     try {
+      var sends = [];
       if (WEB3FORMS_KEY) {
-        await fetch("https://api.web3forms.com/submit", {
+        sends.push(fetch("https://api.web3forms.com/submit", {
           method:"POST", headers:{"Content-Type":"application/json","Accept":"application/json"},
           body: JSON.stringify({ access_key: WEB3FORMS_KEY, subject: "New academy lead: " + data.name + " (" + data.business_type + ")", from_name: BRAND + " landing page", ...data })
-        });
+        }));
       }
+      if (SHEETS_URL) {
+        // Google Apps Script web app — no-cors so the browser doesn't block it.
+        sends.push(fetch(SHEETS_URL, {
+          method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"},
+          body: JSON.stringify({ ...data, source: location.host })
+        }));
+      }
+      await Promise.all(sends);
     } catch(_) {}
     try { sessionStorage.setItem("lead", JSON.stringify(data)); } catch(_) {}
     window.location.href = "thank-you.html";
