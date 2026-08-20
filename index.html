@@ -787,14 +787,18 @@
         }));
       }
       if (SHEETS_URL) {
-        // Google Apps Script web app — send as a GET beacon (the doGet path,
-        // proven to write reliably). An <img> beacon fires even as we navigate
-        // away, so the lead always reaches the Sheet.
+        // Google Apps Script web app — GET path (proven to write). Fire an <img>
+        // beacon AND a fetch, then WAIT for it to finish (up to 3s) before we
+        // navigate away, so the request is never cut off mid-flight.
         var q = new URLSearchParams({
           name: data.name, whatsapp: data.whatsapp, email: data.email,
           business_type: data.business_type, students: data.students, source: location.host
         }).toString();
-        try { new Image().src = SHEETS_URL + "?" + q + "&t=" + Date.now(); } catch(_) {}
+        var surl = SHEETS_URL + "?" + q + "&t=" + Date.now();
+        try { new Image().src = surl; } catch(_) {}
+        var sheetReq = fetch(surl, { method: "GET", mode: "no-cors" }).catch(function(){});
+        // Don't hold the visitor more than ~3s even if the endpoint is slow.
+        sends.push(Promise.race([sheetReq, new Promise(function(res){ setTimeout(res, 3000); })]));
       }
       await Promise.all(sends);
     } catch(_) {}
