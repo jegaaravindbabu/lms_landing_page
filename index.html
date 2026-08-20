@@ -345,6 +345,38 @@
     .reveal{opacity:1;transform:none;transition:none;}
     .btn:hover,.card:hover{transform:none;}
   }
+
+  /* ---------- PRICE DISPLAY  (₹899/month · billed annually) ---------- */
+  .price{font-family:"Bricolage Grotesque",sans-serif;display:inline-block;}
+  .price .amt{display:block;font-weight:800;font-size:clamp(34px,5.4vw,52px);letter-spacing:-.02em;
+    line-height:1;color:var(--amber);}
+  .price .amt .per{font-size:.4em;font-weight:700;color:#c7d0e2;letter-spacing:0;}
+  .price .billed{display:block;margin-top:9px;font-family:"Inter",sans-serif;font-size:13.5px;
+    font-weight:600;letter-spacing:.02em;color:var(--muted-d);text-transform:none;}
+  /* on light sections */
+  .price.on-light .amt .per{color:var(--muted-l);}
+  .price.on-light .billed{color:var(--muted-l);}
+
+  /* compact inline pill (nav + hero trust) */
+  .price-pill{display:inline-flex;align-items:baseline;gap:7px;padding:9px 15px;border-radius:12px;
+    background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.32);white-space:nowrap;}
+  .price-pill .amt{font-family:"Bricolage Grotesque";font-weight:800;font-size:19px;color:var(--amber);letter-spacing:-.02em;line-height:1;}
+  .price-pill .amt .per{font-size:.62em;font-weight:700;color:#c7d0e2;}
+  .price-pill .billed{font-family:"Inter",sans-serif;font-size:11.5px;font-weight:600;color:var(--muted-d);}
+  @media(max-width:980px){.nav .price-pill{display:none;}}
+
+  /* dedicated pricing band */
+  .price-band{background:var(--ink);color:#fff;}
+  .price-band-card{max-width:640px;margin:0 auto;text-align:center;background:var(--ink-2);
+    border:1px solid var(--line-dk);border-radius:var(--r-xl);padding:52px 32px;
+    box-shadow:var(--shadow-lg);position:relative;overflow:hidden;}
+  .price-band-card::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(60% 120% at 50% -10%,rgba(245,166,35,.16),transparent 60%);}
+  .price-band-card>*{position:relative;z-index:1;}
+  .price-band .price{margin-top:18px;display:block;}
+  .price-band-card .eyebrow{justify-content:center;}
+  .price-note{color:#c7d0e2;font-size:17px;margin:20px auto 28px;max-width:460px;}
+  .price-note b{color:#fff;font-weight:700;}
 </style>
 </head>
 <body>
@@ -366,8 +398,9 @@
       <span id="brand-name">Online Academy</span>
     </a>
     <nav class="nav-links">
-      <a href="#watch">Demo</a><a href="#features">Features</a><a href="#compare">Why us</a><a href="#faq">FAQ</a>
+      <a href="#watch">Demo</a><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#compare">Why us</a><a href="#faq">FAQ</a>
     </nav>
+    <span class="price-pill"><span class="amt">₹899<span class="per">/mo</span></span><span class="billed">billed yearly</span></span>
     <a class="btn btn-amber" href="#lead">Start My Academy</a>
   </div>
 </header>
@@ -379,6 +412,10 @@
       <span class="eyebrow"><span class="dot"></span> For coaching institutes &amp; tuition centres</span>
       <h1 style="margin-top:18px;">Start Your Own<br>Online <span class="u">Academy</span></h1>
       <p class="sub">Give your coaching a learning app under <b>your own name and domain</b> — video lessons, tests with ranks, and fees that land <b>straight in your bank</b>. No revenue cut, no app store, live in 24 hours.</p>
+      <div class="price" style="margin-top:26px;">
+        <span class="amt">₹899<span class="per">/month</span></span>
+        <span class="billed">billed annually · no setup fee · 0% commission</span>
+      </div>
       <div class="cta">
         <a class="btn btn-amber btn-lg" href="#lead">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5 3 21l4.5-1.5"/><path d="M15 6l3 3"/><path d="M13 3l8 8-9.5 9.5-5.5 1 1-5.5L13 3Z"/></svg>
@@ -438,6 +475,8 @@
 <!-- CONTEXT TICKER -->
 <div class="ticker">
   <div class="wrap">
+    <span>Just <b>₹899/month</b>, billed annually</span>
+    <span class="sep"></span>
     <span>Built for <b>all courses, subjects &amp; competitive exams</b></span>
     <span class="sep"></span>
     <span>Login with <b>phone + OTP</b> — no downloads</span>
@@ -537,6 +576,24 @@
   </div>
 </section>
 
+<!-- ============================ PRICING ============================ -->
+<section class="sec price-band" id="pricing">
+  <div class="wrap reveal">
+    <div class="price-band-card">
+      <span class="eyebrow"><span class="dot"></span> Simple, honest pricing</span>
+      <div class="price">
+        <span class="amt">₹899<span class="per">/month</span></span>
+        <span class="billed">billed annually</span>
+      </div>
+      <p class="price-note">One flat plan — everything included. <b>No setup fee, no maintenance charges,</b> and <b>0% commission</b> on your course fees. You keep every rupee your students pay.</p>
+      <a class="btn btn-amber btn-lg" href="#lead">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l8 8-9.5 9.5-5.5 1 1-5.5L13 3Z"/></svg>
+        Start My Academy
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ============================ COMPARE ============================ -->
 <section class="sec" id="compare">
   <div class="wrap">
@@ -556,7 +613,7 @@
           <tr><td>Who owns the student data</td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg> The platform</span></td><td class="mine"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> You</span></td></tr>
           <tr><td>Payments settle to</td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg> Their account first</span></td><td class="mine"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Your account, directly</span></td></tr>
           <tr><td>Your own domain</td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg> No</span></td><td class="mine"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Yes</span></td></tr>
-          <tr><td>Cost model</td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg> % of everything you earn</span></td><td class="mine"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Flat licence — you keep the upside</span></td></tr>
+          <tr><td>Cost model</td><td><span class="no"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg> % of everything you earn</span></td><td class="mine"><span class="yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> Flat ₹899/month, billed annually — you keep the upside</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -574,8 +631,12 @@
         <ul>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> A live look at your own branded app</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> See how students enrol and pay you directly</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> A clear quote for your size — no obligation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-11"/></svg> One flat price — no setup fee, no commission</li>
         </ul>
+        <div class="price" style="position:relative;margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12);">
+          <span class="amt">₹899<span class="per">/month</span></span>
+          <span class="billed">billed annually · everything included</span>
+        </div>
         <a class="btn btn-wa wa" id="inline-wa">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.6.2-.2.3-.7.9-.9 1-.2.2-.3.2-.6.1-1.6-.8-2.6-1.5-3.7-3.3-.3-.5.3-.5.8-1.5.1-.2 0-.3 0-.5-.1-.1-.6-1.5-.9-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.9.9-1.1 2-.7 3.2.5 1.5 1.5 2.9 2 3.4 1.9 2.4 4 3.2 5.6 3.6.9.2 1.6.2 2.2 0 .6-.1 1.7-.7 2-1.4.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3Z"/><path d="M20.5 3.5A10.5 10.5 0 0 0 3.8 17.2L3 21l3.9-.8A10.5 10.5 0 1 0 20.5 3.5Zm-8.5 17c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-2.6.5.5-2.5-.2-.3A8.5 8.5 0 1 1 12 20.5Z"/></svg>
           Message us on WhatsApp
@@ -636,8 +697,9 @@
       <h2>Frequently asked</h2>
     </div>
     <div class="reveal">
+      <details><summary>How much does it cost? <span class="plus"></span></summary><p>One flat plan at <b>₹899/month, billed annually</b>. No setup fee, no maintenance charges, and 0% commission on your course fees — you keep every rupee students pay. Everything is included: your branding, your domain, unlimited courses, tests and students.</p></details>
       <details><summary>How long does it take to launch? <span class="plus"></span></summary><p>Usually within 24 hours of receiving your logo and colours. Adding your own courses takes only minutes each.</p></details>
-      <details><summary>Do you take a cut of my fees? <span class="plus"></span></summary><p>No. You connect your own payment gateway and students pay you directly. We charge a flat licence — never a percentage of your income.</p></details>
+      <details><summary>Do you take a cut of my fees? <span class="plus"></span></summary><p>No. You connect your own payment gateway and students pay you directly. We charge a flat ₹899/month (billed annually) — never a percentage of your income.</p></details>
       <details><summary>Can students watch on their phones? <span class="plus"></span></summary><p>Yes — any mobile browser, no app-store download. Students log in with just a phone number and OTP.</p></details>
       <details><summary>Can I upload PDFs and notes, not just video? <span class="plus"></span></summary><p>Absolutely — video lessons, PDF and Word notes, plus timed tests with ranks and percentiles.</p></details>
       <details><summary>Is my data and my students' data private? <span class="plus"></span></summary><p>Yes. Each institute's data is fully isolated, and you own it. You can export your students and payments any time.</p></details>
@@ -650,6 +712,10 @@
   <div class="wrap reveal">
     <h2>Stop renting someone else's platform</h2>
     <p>Launch a learning app that carries your name, keeps every rupee, and is live this week.</p>
+    <div class="price" style="margin:26px auto 30px;">
+      <span class="amt">₹899<span class="per">/month</span></span>
+      <span class="billed">billed annually · no setup fee · 0% commission</span>
+    </div>
     <a class="btn btn-amber btn-lg" href="#lead">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l8 8-9.5 9.5-5.5 1 1-5.5L13 3Z"/></svg>
       Start My Academy
@@ -662,6 +728,7 @@
     <div class="brand"><span class="mark" style="width:28px;height:28px;border-radius:8px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1 2.5 3 6 3s6-2 6-3v-5"/></svg></span> <span id="brand-foot">Online Academy</span></div>
     <div class="fl">
       <a href="#watch">Demo</a>
+      <a href="#pricing">Pricing</a>
       <a href="#lead">Start My Academy</a>
       <a href="privacy.html">Privacy</a>
     </div>
