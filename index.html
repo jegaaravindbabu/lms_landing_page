@@ -787,13 +787,14 @@
         }));
       }
       if (SHEETS_URL) {
-        // Google Apps Script web app — send as form fields (URLSearchParams) so
-        // e.parameter is populated server-side; no-cors avoids a browser block.
-        var params = new URLSearchParams({
+        // Google Apps Script web app — send as a GET beacon (the doGet path,
+        // proven to write reliably). An <img> beacon fires even as we navigate
+        // away, so the lead always reaches the Sheet.
+        var q = new URLSearchParams({
           name: data.name, whatsapp: data.whatsapp, email: data.email,
           business_type: data.business_type, students: data.students, source: location.host
-        });
-        sends.push(fetch(SHEETS_URL, { method:"POST", mode:"no-cors", body: params }));
+        }).toString();
+        try { new Image().src = SHEETS_URL + "?" + q + "&t=" + Date.now(); } catch(_) {}
       }
       await Promise.all(sends);
     } catch(_) {}
