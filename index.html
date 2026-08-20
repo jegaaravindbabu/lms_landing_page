@@ -772,9 +772,11 @@
     btn.disabled = true; btn.style.opacity = ".7"; btn.querySelector("svg").style.display="none";
     btn.childNodes[btn.childNodes.length-1].textContent = " Please wait…";
     var f = e.target;
+    // Read via f.elements — NOT f.name (that clashes with the form's own .name property).
+    function val(n){ var el = f.elements[n]; return el ? String(el.value || "") : ""; }
     var data = {
-      name: f.name.value, whatsapp: f.whatsapp.value, email: f.email.value,
-      business_type: f.business_type.value, students: f.students.value
+      name: val("name"), whatsapp: val("whatsapp"), email: val("email"),
+      business_type: val("business_type"), students: val("students")
     };
     try {
       var sends = [];
@@ -785,11 +787,13 @@
         }));
       }
       if (SHEETS_URL) {
-        // Google Apps Script web app — no-cors so the browser doesn't block it.
-        sends.push(fetch(SHEETS_URL, {
-          method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"},
-          body: JSON.stringify({ ...data, source: location.host })
-        }));
+        // Google Apps Script web app — send as form fields (URLSearchParams) so
+        // e.parameter is populated server-side; no-cors avoids a browser block.
+        var params = new URLSearchParams({
+          name: data.name, whatsapp: data.whatsapp, email: data.email,
+          business_type: data.business_type, students: data.students, source: location.host
+        });
+        sends.push(fetch(SHEETS_URL, { method:"POST", mode:"no-cors", body: params }));
       }
       await Promise.all(sends);
     } catch(_) {}
