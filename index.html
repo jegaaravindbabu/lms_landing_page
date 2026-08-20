@@ -787,18 +787,31 @@
         }));
       }
       if (SHEETS_URL) {
-        // Google Apps Script web app — GET path (proven to write). Fire an <img>
-        // beacon AND a fetch, then WAIT for it to finish (up to 3s) before we
-        // navigate away, so the request is never cut off mid-flight.
-        var q = new URLSearchParams({
-          name: data.name, whatsapp: data.whatsapp, email: data.email,
-          business_type: data.business_type, students: data.students, source: location.host
-        }).toString();
-        var surl = SHEETS_URL + "?" + q + "&t=" + Date.now();
-        try { new Image().src = surl; } catch(_) {}
-        var sheetReq = fetch(surl, { method: "GET", mode: "no-cors" }).catch(function(){});
-        // Don't hold the visitor more than ~3s even if the endpoint is slow.
-        sends.push(Promise.race([sheetReq, new Promise(function(res){ setTimeout(res, 3000); })]));
+        // Google Apps Script — submit via a real hidden <form> targeting a hidden
+        // <iframe>. A form POST behaves like a normal navigation (the method your
+        // self-test proved works) and is NOT subject to the cross-origin blocking
+        // that stops fetch/XHR/img requests to script.google.com.
+        try {
+          var sinkName = "sheetSink_" + Date.now();
+          var sink = document.createElement("iframe");
+          sink.name = sinkName; sink.style.display = "none";
+          document.body.appendChild(sink);
+          var hf = document.createElement("form");
+          hf.method = "POST"; hf.action = SHEETS_URL; hf.target = sinkName;
+          var fields = {
+            name: data.name, whatsapp: data.whatsapp, email: data.email,
+            business_type: data.business_type, students: data.students, source: location.host
+          };
+          Object.keys(fields).forEach(function(k){
+            var inp = document.createElement("input");
+            inp.type = "hidden"; inp.name = k; inp.value = fields[k] || "";
+            hf.appendChild(inp);
+          });
+          document.body.appendChild(hf);
+          hf.submit();
+          // Keep the visitor on the page long enough for the POST to complete.
+          sends.push(new Promise(function(res){ setTimeout(res, 2000); }));
+        } catch(_) {}
       }
       await Promise.all(sends);
     } catch(_) {}
